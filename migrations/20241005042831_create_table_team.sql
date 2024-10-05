@@ -1,0 +1,15 @@
+-- Add migration script here
+CREATE TABLE teams (
+    id UUID PRIMARY KEY NOT NULL,
+    name VARCHAR NOT NULL UNIQUE,
+    owner UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    image_url VARCHAR,
+    image_id VARCHAR,
+    game_id INTEGER NOT NULL REFERENCES games(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    is_public BOOLEAN NOT NULL DEFAULT TRUE,
+    description TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    total_member INTEGER NOT NULL DEFAULT 1,
+    max_member INTEGER NOT NULL DEFAULT 10
+);
