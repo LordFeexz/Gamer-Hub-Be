@@ -28,3 +28,22 @@ pub async fn find_all_games(executor: &PgPool) -> Vec<Game> {
 
     games
 }
+
+pub async fn find_game_by_id(executor: &PgPool, id: i32) -> Option<Game> {
+    match sqlx::query!(
+        "SELECT id, name, code, image_url, image_id, min_player, created_at, updated_at FROM games WHERE id = $1",
+        id,
+    ).fetch_one(executor).await {
+        Ok(record) => Some(Game {
+            id: record.id,
+            name: record.name,
+            code: record.code,
+            image_url: record.image_url,
+            image_id: record.image_id,
+            min_player: record.min_player,
+            created_at: convert_primitive_to_naive(record.created_at),
+            updated_at: convert_primitive_to_naive(record.updated_at),
+        }),
+        Err(_) => None,
+    }
+}
