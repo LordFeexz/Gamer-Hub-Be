@@ -1,5 +1,7 @@
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
+use uuid::Uuid;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 pub enum Privacy {
@@ -11,7 +13,7 @@ pub enum Privacy {
 #[derive(FromRow, Debug, Serialize, Deserialize)]
 pub struct Post {
     pub id: i32,
-    pub user_id: String,
+    pub user_id: Uuid,
     pub text: Option<String>,
     pub allow_comment: bool,
     pub edited_text: bool,
@@ -21,8 +23,8 @@ pub struct Post {
     pub count_comment: i64,
     pub count_bookmark: i64,
     pub count_share: i64,
-    pub created_at: String,
-    pub updated_at: String,
+    pub created_at: NaiveDateTime,
+    pub updated_at: NaiveDateTime,
     pub community_id: Option<i32>,
     pub search_vector: Option<String>,
     pub trgm_similarity: Option<f32>,

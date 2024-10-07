@@ -19,7 +19,7 @@ CREATE TYPE supported_currency AS ENUM (
     'IDR'
 );
 
-CREATE TABLE transactions (
+CREATE TABLE IF NOT EXISTS transactions (
     id UUID PRIMARY KEY NOT NULL,
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
     amount FLOAT NOT NULL,

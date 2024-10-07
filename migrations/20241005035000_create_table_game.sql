@@ -1,5 +1,5 @@
 -- Add migration script here
-CREATE TABLE games (
+CREATE TABLE IF NOT EXISTS games (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,
     code VARCHAR(255) NOT NULL UNIQUE,

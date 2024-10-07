@@ -5,7 +5,7 @@ CREATE TYPE post_privacy AS ENUM (
     'friend-only'
 );
 
-CREATE TABLE posts (
+CREATE TABLE IF NOT EXISTS posts (
     id SERIAL PRIMARY KEY,
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
     text TEXT,

@@ -1,7 +1,7 @@
 -- Add migration script here
 CREATE TYPE tournament_status AS ENUM ('preparation', 'ongoing', 'completed', 'cancelled');
 
-CREATE TABLE tournaments (
+CREATE TABLE IF NOT EXISTS tournaments (
     id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR NOT NULL,
     game_id INTEGER NOT NULL REFERENCES games(id) ON DELETE CASCADE ON UPDATE CASCADE,

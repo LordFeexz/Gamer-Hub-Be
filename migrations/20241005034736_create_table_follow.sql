@@ -1,5 +1,5 @@
 -- Add migration script here
-CREATE TABLE follows (
+CREATE TABLE IF NOT EXISTS follows (
     id SERIAL PRIMARY KEY,
     follower_id UUID NOT NULL,
     followed_id UUID NOT NULL,

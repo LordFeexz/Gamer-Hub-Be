@@ -1,7 +1,7 @@
 -- Add migration script here
 CREATE TYPE community_role AS ENUM ('admin', 'member', 'owner');
 
-CREATE TABLE community_members (
+CREATE TABLE IF NOT EXISTS community_members (
     id SERIAL PRIMARY KEY,
     user_id UUID NOT NULL,
     community_id INT NOT NULL,

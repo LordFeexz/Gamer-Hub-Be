@@ -1,5 +1,7 @@
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
+use uuid::Uuid;
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub enum TransactionType {
@@ -27,8 +29,8 @@ pub enum TransactionStatus {
 
 #[derive(FromRow, Debug, Serialize, Deserialize)]
 pub struct Transaction {
-    pub id: String,
-    pub user_id: String,
+    pub id: Uuid,
+    pub user_id: Uuid,
     pub amount: f64,
     pub transaction_type: TransactionType,
     pub currency: SupportedCurrency,
@@ -39,6 +41,6 @@ pub struct Transaction {
     pub discount: f64,
     pub fee: f64,
     pub tax: f64,
-    pub created_at: String,
-    pub updated_at: String,
+    pub created_at: NaiveDateTime,
+    pub updated_at: NaiveDateTime,
 }

@@ -1,7 +1,7 @@
 -- Add migration script here
 CREATE TYPE event_status AS ENUM ('scheduled', 'ongoing', 'completed', 'cancelled');
 
-CREATE TABLE community_events (
+CREATE TABLE IF NOT EXISTS community_events (
     id SERIAL PRIMARY KEY,
     community_id INTEGER NOT NULL,
     title VARCHAR NOT NULL,

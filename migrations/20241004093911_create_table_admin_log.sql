@@ -1,5 +1,5 @@
 -- Add migration script here
-CREATE TABLE admin_logs (
+CREATE TABLE IF NOT EXISTS admin_logs (
     id SERIAL PRIMARY KEY,
     admin_id UUID NOT NULL,
     path VARCHAR NOT NULL,

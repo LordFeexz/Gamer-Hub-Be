@@ -1,5 +1,5 @@
 -- Add migration script here
-CREATE TABLE user_achievements (
+CREATE TABLE IF NOT EXISTS user_achievements (
     id SERIAL PRIMARY KEY NOT NULL,
     achievement_id INTEGER NOT NULL REFERENCES achievements(id) ON DELETE SET NULL ON UPDATE SET NULL,
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE SET NULL ON UPDATE SET NULL,

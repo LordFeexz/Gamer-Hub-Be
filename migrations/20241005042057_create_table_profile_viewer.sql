@@ -1,5 +1,5 @@
 -- Add migration script here
-CREATE TABLE profile_viewers (
+CREATE TABLE IF NOT EXISTS profile_viewers (
     id SERIAL PRIMARY KEY,
     target_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
     viewer_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,

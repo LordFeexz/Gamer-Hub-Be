@@ -1,5 +1,7 @@
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
+use uuid::Uuid;
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub enum Division {
@@ -20,12 +22,12 @@ pub enum Role {
 
 #[derive(FromRow, Debug, Serialize, Deserialize)]
 pub struct Admin {
-    pub id: String,
+    pub id: Uuid,
     pub fullname: String,
     pub email: String,
     pub password: String,
     pub division: Division,
     pub role: Role,
-    pub created_at: String,
-    pub updated_at: String,
+    pub created_at: NaiveDateTime,
+    pub updated_at: NaiveDateTime,
 }

@@ -1,5 +1,5 @@
 -- Add migration script here
-CREATE TABLE reply_comments (
+CREATE TABLE IF NOT EXISTS reply_comments (
     id SERIAL PRIMARY KEY,
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
     text TEXT NOT NULL,

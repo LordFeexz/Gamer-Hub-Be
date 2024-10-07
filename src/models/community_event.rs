@@ -1,5 +1,7 @@
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
+use uuid::Uuid;
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub enum CommunityEventStatus {
@@ -16,11 +18,11 @@ pub struct CommunityEvent {
     pub title: String,
     pub description: Option<String>,
     pub location: String,
-    pub start_time: String,
-    pub end_time: Option<String>,
-    pub created_by: String,
+    pub start_time: NaiveDateTime,
+    pub end_time: Option<NaiveDateTime>,
+    pub created_by: Uuid,
     pub is_public: bool,
     pub status: CommunityEventStatus,
-    pub created_at: String,
-    pub updated_at: String,
+    pub created_at: NaiveDateTime,
+    pub updated_at: NaiveDateTime,
 }

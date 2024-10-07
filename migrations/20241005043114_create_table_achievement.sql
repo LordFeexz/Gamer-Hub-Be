@@ -1,5 +1,5 @@
 -- Add migration script here
-CREATE TABLE achievements (
+CREATE TABLE IF NOT EXISTS achievements (
     id SERIAL PRIMARY KEY NOT NULL,
     name VARCHAR NOT NULL,
     description TEXT,

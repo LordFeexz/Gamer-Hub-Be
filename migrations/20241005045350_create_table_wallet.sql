@@ -1,5 +1,5 @@
 -- Add migration script here
-CREATE TABLE wallets (
+CREATE TABLE IF NOT EXISTS wallets (
     id UUID PRIMARY KEY NOT NULL,
     user_id UUID NOT NULL UNIQUE REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
     balance DECIMAL(15, 2) DEFAULT 0,

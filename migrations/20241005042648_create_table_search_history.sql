@@ -1,5 +1,5 @@
 -- Add migration script here
-CREATE TABLE search_histories (
+CREATE TABLE IF NOT EXISTS search_histories (
     id SERIAL PRIMARY KEY,
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE ON UPDATE CASCADE,
     searched_text VARCHAR NOT NULL,

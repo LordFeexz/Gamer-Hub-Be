@@ -1,3 +1,4 @@
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
@@ -10,6 +11,6 @@ pub struct Achievement {
     pub image_id: String,
     pub game_id: Option<i32>,
     pub community_id: Option<i32>,
-    pub created_at: String,
-    pub updated_at: String,
+    pub created_at: NaiveDateTime,
+    pub updated_at: NaiveDateTime,
 }

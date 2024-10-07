@@ -1,5 +1,7 @@
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
+use uuid::Uuid;
 
 #[derive(Debug, Serialize, Deserialize, PartialEq, Eq)]
 pub enum TournamentStatus {
@@ -24,9 +26,9 @@ pub struct Tournament {
     pub image_id: String,
     pub location: String,
     pub tags: Vec<String>,
-    pub created_at: String,
-    pub updated_at: String,
-    pub user_id: Option<String>,
+    pub created_at: NaiveDateTime,
+    pub updated_at: NaiveDateTime,
+    pub user_id: Option<Uuid>,
     pub community_id: Option<i32>,
     pub live_on: Option<String>,
     pub is_public: bool,

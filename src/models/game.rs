@@ -1,3 +1,4 @@
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
@@ -8,7 +9,7 @@ pub struct Game {
     pub code: String,
     pub image_url: String,
     pub image_id: String,
-    pub created_at: String,
-    pub updated_at: String,
-    pub min_player: i16,
+    pub created_at: NaiveDateTime,
+    pub updated_at: NaiveDateTime,
+    pub min_player: i32,
 }

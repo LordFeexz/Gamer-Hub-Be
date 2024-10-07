@@ -1,5 +1,5 @@
 -- Add migration script here
-CREATE TABLE communities (
+CREATE TABLE IF NOT EXISTS communities (
     id SERIAL PRIMARY KEY,
     name VARCHAR NOT NULL,
     description TEXT DEFAULT NULL,

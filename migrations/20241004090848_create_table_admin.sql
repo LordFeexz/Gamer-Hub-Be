@@ -1,5 +1,5 @@
 -- Add migration script here
-CREATE TABLE admins (
+CREATE TABLE IF NOT EXISTS admins (
     id UUID PRIMARY KEY NOT NULL,
     fullname VARCHAR NOT NULL,
     email VARCHAR UNIQUE NOT NULL,

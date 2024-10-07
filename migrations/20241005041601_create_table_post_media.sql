@@ -1,7 +1,7 @@
 -- Add migration script here
 CREATE TYPE media_type AS ENUM ('image', 'video');
 
-CREATE TABLE post_media (
+CREATE TABLE IF NOT EXISTS post_media (
     id SERIAL PRIMARY KEY,
     media_type media_type NOT NULL,
     url VARCHAR NOT NULL,
