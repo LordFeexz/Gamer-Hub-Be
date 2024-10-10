@@ -3,6 +3,12 @@ use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 use uuid::Uuid;
 
+#[derive(Debug, Serialize, Deserialize)]
+pub enum UserStatus {
+    ACTIVE,
+    INACTIVE,
+}
+
 #[derive(Debug, FromRow, Serialize, Deserialize)]
 pub struct User {
     pub id: Uuid,
@@ -15,7 +21,7 @@ pub struct User {
     pub image_id: Option<String>,
     pub banner_image_url: Option<String>,
     pub banner_image_id: Option<String>,
-    pub status: String,
+    pub status: UserStatus,
     pub created_at: NaiveDateTime,
     pub updated_at: NaiveDateTime,
     search_vector_username: String,

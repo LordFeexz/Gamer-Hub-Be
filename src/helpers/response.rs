@@ -1,65 +1,10 @@
+use once_cell::sync::Lazy;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
+use validator::ValidationErrors;
 
-#[derive(Debug, Serialize, Deserialize)]
-pub struct RespBodyProps {
-    pub code: u16,
-    pub message: String,
-    pub data: Value,
-}
-
-// Struct untuk `PaginationRespProps`
-#[derive(Debug, Serialize, Deserialize)]
-pub struct PaginationRespProps {
-    pub page: u32,
-    pub limit: u32,
-    pub total_data: u32,
-    pub total_page: u32,
-}
-
-// Struct untuk `IRespBody`
-#[derive(Debug, Serialize, Deserialize)]
-pub struct RespBody {
-    pub code: u16,
-    pub message: String,
-    pub status: String,
-    pub data: Value,
-    pub page: Option<u32>,
-    pub limit: Option<u32>,
-    pub total_data: Option<u32>,
-    pub total_page: Option<u32>,
-}
-
-pub fn send_response_body(props: RespBodyProps, opts: Option<PaginationRespProps>) -> RespBody {
-    let status = status_name()
-        .get(&props.code)
-        .unwrap_or(&"Unknown Status")
-        .to_string();
-
-    let (page, limit, total_data, total_page) = match opts {
-        Some(pagination) => (
-            Some(pagination.page),
-            Some(pagination.limit),
-            Some(pagination.total_data),
-            Some(pagination.total_page),
-        ),
-        None => (None, None, None, None),
-    };
-
-    RespBody {
-        code: props.code,
-        message: props.message,
-        status,
-        data: props.data,
-        page,
-        limit,
-        total_data,
-        total_page,
-    }
-}
-
-pub fn status_name() -> HashMap<u16, &'static str> {
+static STATUS_NAME: Lazy<HashMap<u16, &'static str>> = Lazy::new(|| {
     let mut map = HashMap::new();
     map.insert(100, "Continue");
     map.insert(101, "Switching Protocols");
@@ -124,4 +69,66 @@ pub fn status_name() -> HashMap<u16, &'static str> {
     map.insert(511, "Network Authentication Required");
 
     map
+});
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct RespBodyProps {
+    pub code: u16,
+    pub message: String,
+    pub data: Option<Value>,
+    pub errors: Option<Value>,
+}
+
+// Struct untuk `PaginationRespProps`
+#[derive(Debug, Serialize, Deserialize)]
+pub struct PaginationRespProps {
+    pub page: u32,
+    pub limit: u32,
+    pub total_data: u32,
+    pub total_page: u32,
+}
+
+pub fn send_response_body(
+    props: RespBodyProps,
+    opts: Option<PaginationRespProps>,
+) -> HashMap<&'static str, Value> {
+    let status = STATUS_NAME
+        .get(&props.code)
+        .unwrap_or(&"Unknown Status")
+        .to_string();
+
+    let mut resp: HashMap<&str, Value> = HashMap::new();
+
+    resp.insert("code", Value::from(props.code));
+    resp.insert("message", Value::from(props.message.clone()));
+    resp.insert("status", Value::from(status));
+
+    if let Some(data) = props.data {
+        resp.insert("data", data);
+    }
+
+    if let Some(err) = props.errors {
+        resp.insert("errors", err);
+    }
+
+    if let Some(paginate) = opts {
+        resp.insert("page", Value::from(paginate.page));
+        resp.insert("limit", Value::from(paginate.limit));
+        resp.insert("totalData", Value::from(paginate.total_data));
+        resp.insert("totalPage", Value::from(paginate.total_page));
+    }
+
+    resp
+}
+
+pub fn send_validation_error_response(err: ValidationErrors) -> HashMap<&'static str, Value> {
+    send_response_body(
+        RespBodyProps {
+            code: 400,
+            message: String::from("Validation Failed"),
+            data: None,
+            errors: Some(serde_json::to_value(err).unwrap()),
+        },
+        None,
+    )
 }

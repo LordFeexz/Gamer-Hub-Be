@@ -12,31 +12,27 @@ pub fn game_handler(conf: &mut web::ServiceConfig) {
 }
 
 #[get("/")]
-pub async fn fetch_all_games(data: web::Data<AppState>) -> impl Responder {
-    let executor = &data.client;
-    let games = service::find_all_games(executor).await;
-
-    let response = RespBodyProps {
-        code: 200,
-        message: String::from("Success"),
-        data: serde_json::to_value(games).unwrap(),
-    };
-
-    HttpResponse::Ok().json(send_response_body(response, None))
+async fn fetch_all_games(data: web::Data<AppState>) -> impl Responder {
+    HttpResponse::Ok().json(send_response_body(
+        RespBodyProps {
+            code: 200,
+            message: String::from("Success"),
+            data: Some(serde_json::to_value(service::find_all_games(&data.client).await).unwrap()),
+            errors: None,
+        },
+        None,
+    ))
 }
 
 #[get("/{id}")]
-pub async fn fetch_game_by_id(path: web::Path<i32>, data: web::Data<AppState>) -> impl Responder {
-    let executor = &data.client;
-    let id = path.into_inner();
-
-    let game = service::find_game_by_id(executor, id).await;
-    match game {
+async fn fetch_game_by_id(path: web::Path<i32>, data: web::Data<AppState>) -> impl Responder {
+    match service::find_game_by_id(&data.client, path.into_inner()).await {
         Some(game) => HttpResponse::Ok().json(send_response_body(
             RespBodyProps {
                 code: 200,
                 message: String::from("Success"),
-                data: serde_json::to_value(game).unwrap(),
+                data: Some(serde_json::to_value(game).unwrap()),
+                errors: None,
             },
             None,
         )),
@@ -44,7 +40,8 @@ pub async fn fetch_game_by_id(path: web::Path<i32>, data: web::Data<AppState>) -
             RespBodyProps {
                 code: 404,
                 message: String::from("Not Found"),
-                data: serde_json::to_value("null").unwrap(),
+                data: None,
+                errors: None,
             },
             None,
         )),
